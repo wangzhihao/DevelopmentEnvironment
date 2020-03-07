@@ -3,7 +3,7 @@
 My Docker Development Environment. The image is registered in docker hub repository [wangzhihao/dev](https://hub.docker.com/r/wangzhihao/dev).
 
 
-## Build 
+# Build 
 
 Command "docker run -e xxx" won't take effects for RUN clause in dockerfile since
 RUN clause happens in build time before image is generated and the command happens
@@ -22,20 +22,9 @@ docker run --rm -it  -v $(pwd):/home/$USER/workspace -v ~/.ssh:/home/$USER/.ssh 
 docker push wangzhihao/dev
 ```
 
-## Run
+# Run
 
 ```
 docker pull wangzhihao/dev 
 docker run --rm -it  -v $(pwd):/home/$USER/workspace -v ~/.ssh:/home/$USER/.ssh wangzhihao/dev 
 ```
-
-# Mosh Utility Container
-
-Inside directory `./mosh` there is a mosh utility container.
-
-## Build
-
-```
-docker build -t wangzhihao/mosh-server ./mosh/
-```
-
