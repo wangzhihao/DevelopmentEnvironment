@@ -1,14 +1,15 @@
-FROM ubuntu:16.04
+FROM ubuntu:latest
 
 # Install Commons 
 RUN \
-  apt-get update && \
-  apt-get install -y \
+  apt update && \
+  apt install -y \
         openssh-server \
         libmysqlclient-dev \
         curl \
         zsh \
         vim \
+	neovim \
         tmux \
        	tree \
         sudo \
@@ -36,10 +37,10 @@ RUN mkdir -p "${UHOME}" \
 # RUN mkdir -p "/home/${UNAME}"
 
 # Install Java.
-RUN apt-get update && \
-	apt-get install -y openjdk-8-jdk && \
-	apt-get install -y ant && \
-	apt-get clean && \
+RUN apt update && \
+	apt install -y openjdk-8-jdk && \
+	apt install -y ant && \
+	apt clean && \
 	rm -rf /var/lib/apt/lists/* && \
 	rm -rf /var/cache/oracle-jdk8-installer;
 
@@ -54,8 +55,8 @@ RUN \
   curl -L -o sbt-$SBT_VERSION.deb https://dl.bintray.com/sbt/debian/sbt-$SBT_VERSION.deb && \
   dpkg -i sbt-$SBT_VERSION.deb && \
   rm sbt-$SBT_VERSION.deb && \
-  apt-get update && \
-  apt-get install sbt
+  apt update && \
+  apt install sbt
 
 # Install Scala
 RUN \
