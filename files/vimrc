@@ -1,0 +1,7 @@
+execute pathogen#infect('/home/zhihaow/bundle/{}')
+let g:go_version_warning = 0
+hi Directory guifg=#00FFFF ctermfg=Cyan
+set nofoldenable
+syntax on 
+filetype plugin indent on 
+set number

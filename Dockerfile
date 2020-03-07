@@ -8,9 +8,7 @@ RUN \
         libmysqlclient-dev \
         curl \
         zsh \
-        vim \
 	neovim \
-        tmux \
        	tree \
         sudo \
 	locales \
@@ -90,24 +88,7 @@ RUN mkdir -p \
     $UHOME/.vim_runtime/temp_dirs \
     && curl -LSso \
     $UHOME/.vim/autoload/pathogen.vim \
-    https://tpo.pe/pathogen.vim \
-    && echo "execute pathogen#infect('$UHOME/bundle/{}')" \
-    >> $UHOME/.vimrc \
-    && echo "let g:go_version_warning = 0" \
-    >> $UHOME/.vimrc \
-    && echo "hi Directory guifg=#00FFFF ctermfg=Cyan" \
-    >> $UHOME/.vimrc \
-    && echo "set nofoldenable" \
-    >> $UHOME/.vimrc \
-    && echo "syntax on " \
-    >> $UHOME/.vimrc \
-    && echo "filetype plugin indent on " \
-    >> $UHOME/.vimrc    \
-    && echo "set number" \
-    >> $UHOME/.vimrc
-
-RUN echo "set-window-option -g mode-keys vi" \
-    >> $UHOME/.tmux.conf
+    https://tpo.pe/pathogen.vim 
 
 # Plugins
 RUN cd $UHOME/bundle/ \
@@ -147,7 +128,6 @@ RUN cd $UHOME/bundle/ \
     && git clone --depth 1 https://github.com/SirVer/ultisnips \
     && git clone --depth 1 https://github.com/honza/vim-snippets \
     && git clone --depth 1 https://github.com/derekwyatt/vim-scala \
-    && git clone --depth 1 https://github.com/christoomey/vim-tmux-navigator \
     && git clone --depth 1 https://github.com/ekalinin/Dockerfile.vim \
 # Theme
     && git clone --depth 1 \
@@ -164,8 +144,17 @@ ENV DISABLE=""
 ## setup zsh
 RUN curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | zsh || true
 
-RUN echo "export LC_CTYPE=en_US.utf8" \
-    >> $UHOME/.zshrc
+# Install NVM
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+
+# COPY --chown=$ARG_UID not recognised Issue https://github.com/moby/moby/issues/36557
+COPY ./files/init.vim /home/${UNAME}/.config/nvim/init.vim 
+RUN sudo chown ${UID}:${GID} /home/${UNAME}/.config/nvim/init.vim
+COPY ./files/vimrc /home/${UNAME}/.vimrc
+RUN sudo chown ${UID}:${GID} /home/${UNAME}/.vimrc
+COPY ./files/zshrc /home/${UNAME}/.zshrc
+RUN sudo chown ${UID}:${GID} /home/${UNAME}/.zshrc
+
 
 WORKDIR /home/${UNAME}/workspace
 
