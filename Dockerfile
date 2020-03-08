@@ -7,6 +7,8 @@ RUN \
         openssh-server \
         libmysqlclient-dev \
         curl \
+	tmux \
+	netcat \
         zsh \
 	neovim \
        	tree \
@@ -129,6 +131,7 @@ RUN cd $UHOME/bundle/ \
     && git clone --depth 1 https://github.com/honza/vim-snippets \
     && git clone --depth 1 https://github.com/derekwyatt/vim-scala \
     && git clone --depth 1 https://github.com/ekalinin/Dockerfile.vim \
+    && git clone --depth 1 https://github.com/leafgarland/typescript-vim \
 # Theme
     && git clone --depth 1 \
     https://github.com/altercation/vim-colors-solarized
@@ -149,11 +152,13 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | b
 
 # COPY --chown=$ARG_UID not recognised Issue https://github.com/moby/moby/issues/36557
 COPY ./files/init.vim /home/${UNAME}/.config/nvim/init.vim 
-RUN sudo chown ${UID}:${GID} /home/${UNAME}/.config/nvim/init.vim
+RUN sudo chown -R ${UID}:${GID} /home/${UNAME}/.config
 COPY ./files/vimrc /home/${UNAME}/.vimrc
 RUN sudo chown ${UID}:${GID} /home/${UNAME}/.vimrc
 COPY ./files/zshrc /home/${UNAME}/.zshrc
 RUN sudo chown ${UID}:${GID} /home/${UNAME}/.zshrc
+COPY ./files/tmux.conf /home/${UNAME}/.tmux.conf
+RUN sudo chown ${UID}:${GID} /home/${UNAME}/.tmux.conf
 
 
 WORKDIR /home/${UNAME}/workspace
