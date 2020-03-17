@@ -7,13 +7,14 @@ RUN \
         openssh-server \
         libmysqlclient-dev \
         curl \
-	tmux \
-	netcat \
+        tmux \
+        netcat \
         zsh \
-	neovim \
-       	tree \
+        neovim \
+        tree \
         sudo \
-	locales \
+        locales \
+        gradle \
         git 
 
 ARG UID
