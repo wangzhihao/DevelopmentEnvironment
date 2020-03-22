@@ -1,8 +1,16 @@
-FROM ubuntu:latest
+FROM ubuntu:20.04
+
+# Install Tex 
+ENV DEBIAN_FRONTEND=noninteractive
+RUN \
+  apt update && \
+  apt install -y \
+        texlive-full
+
+# Install AWS CLI
 
 # Install Commons 
 RUN \
-  apt update && \
   apt install -y \
         openssh-server \
         libmysqlclient-dev \
@@ -34,12 +42,14 @@ RUN mkdir -p "${UHOME}" \
     > "/etc/sudoers.d/${UNAME}" \
     && chmod 0440 "/etc/sudoers.d/${UNAME}"
 
+RUN echo "Set disable_coredump false" \
+   >> "/etc/sudo.conf"
+
 # Create HOME dir
 # RUN mkdir -p "/home/${UNAME}"
 
 # Install Java.
-RUN apt update && \
-	apt install -y openjdk-8-jdk && \
+RUN apt install -y openjdk-8-jdk && \
 	apt install -y ant && \
 	apt clean && \
 	rm -rf /var/lib/apt/lists/* && \
