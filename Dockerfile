@@ -23,6 +23,7 @@ RUN \
         sudo \
         locales \
         gradle \
+        awscli \
         git 
 
 ARG UID
