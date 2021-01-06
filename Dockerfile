@@ -106,6 +106,8 @@ RUN mkdir -p \
 
 # Plugins
 RUN cd $UHOME/bundle/ \
+    && git clone --depth 1 https://github.com/junegunn/fzf \
+    && git clone --depth 1 https://github.com/junegunn/fzf.vim \
     && git clone --depth 1 https://github.com/Chiel92/vim-autoformat \
     && git clone --depth 1 https://github.com/pangloss/vim-javascript \
     && git clone --depth 1 https://github.com/scrooloose/nerdcommenter \

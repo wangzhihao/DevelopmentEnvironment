@@ -7,4 +7,5 @@ filetype plugin indent on
 set number
 set expandtab ts=4 sw=4 ai
 set colorcolumn=80
+nmap <C-e> :!!<CR>
 
