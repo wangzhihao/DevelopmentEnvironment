@@ -1,4 +1,5 @@
 FROM ubuntu:20.04
+SHELL ["/bin/bash", "-c"]
 
 # Install Tex 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -22,6 +23,8 @@ RUN \
         tree \
         sudo \
         locales \
+	zip \
+	unzip \
         gradle \
         awscli \
         git 
@@ -49,45 +52,14 @@ RUN echo "Set disable_coredump false" \
 # Create HOME dir
 # RUN mkdir -p "/home/${UNAME}"
 
-# Install Java.
-RUN apt install -y openjdk-8-jdk && \
-	apt install -y ant && \
-	apt clean && \
-	rm -rf /var/lib/apt/lists/* && \
-	rm -rf /var/cache/oracle-jdk8-installer;
-
-
-ARG SCALA_VERSION
-ENV SCALA_VERSION ${SCALA_VERSION:-2.13.1}
-ARG SBT_VERSION
-ENV SBT_VERSION ${SBT_VERSION:-1.3.3}
-
-# Install sbt
-RUN \
-  curl -L -o sbt-$SBT_VERSION.deb https://dl.bintray.com/sbt/debian/sbt-$SBT_VERSION.deb && \
-  dpkg -i sbt-$SBT_VERSION.deb && \
-  rm sbt-$SBT_VERSION.deb && \
-  apt update && \
-  apt install sbt
-
-# Install Scala
-RUN \
-  curl -fsL https://downloads.typesafe.com/scala/$SCALA_VERSION/scala-$SCALA_VERSION.tgz | tar xfz - -C /usr/share && \
-  mv /usr/share/scala-$SCALA_VERSION /usr/share/scala && \
-  chown -R root:root /usr/share/scala && \
-  chmod -R 755 /usr/share/scala && \
-  ln -s /usr/share/scala/bin/scala /usr/local/bin/scala
-
-# Install scalafmt
-RUN \
-  curl -Lo coursier https://git.io/coursier-cli && \
-  chmod +x coursier && \
-  ./coursier bootstrap org.scalameta:scalafmt-cli_2.12:2.3.2 \
-	  -r sonatype:snapshots \
-          -o /usr/local/bin/scalafmt --main org.scalafmt.cli.Cli && \ 
-  rm -f coursier
-
 USER $UNAME
+
+# Install sdkman and tools
+RUN curl -s "https://get.sdkman.io" | bash
+RUN source "${UHOME}/.sdkman/bin/sdkman-init.sh" \
+	&& sdk install java $(sdk list java | grep -o "8\.[0-9]*\.[0-9]*\.hs-adpt" | head -1) \
+	&& sdk install sbt \
+	&& sdk install scala
 
 RUN git config --global user.email "accept.acm@gmail.com"
 RUN git config --global user.name "Zhihao Wang"
@@ -149,8 +121,6 @@ RUN cd $UHOME/bundle/ \
 # Theme
     && git clone --depth 1 \
     https://github.com/altercation/vim-colors-solarized
-
-RUN vim -E -c 'execute pathogen#helptags()' -c q ; return 0
 
 
 ENV TERM=xterm-256color
