@@ -59,7 +59,8 @@ RUN curl -s "https://get.sdkman.io" | bash
 RUN source "${UHOME}/.sdkman/bin/sdkman-init.sh" \
 	&& sdk install java $(sdk list java | grep -o "8\.[0-9]*\.[0-9]*\.hs-adpt" | head -1) \
 	&& sdk install sbt \
-	&& sdk install scala
+	&& sdk install scala \
+	&& sdk install maven
 
 RUN git config --global user.email "accept.acm@gmail.com"
 RUN git config --global user.name "Zhihao Wang"
