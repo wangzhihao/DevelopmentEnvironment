@@ -23,8 +23,10 @@ RUN \
         tree \
         sudo \
         locales \
-	zip \
-	unzip \
+        iputils-ping \
+        maven \
+        zip \
+        unzip \
         gradle \
         awscli \
         git 
