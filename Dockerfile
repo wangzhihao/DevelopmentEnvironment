@@ -1,44 +1,47 @@
 FROM ubuntu:20.04
 SHELL ["/bin/bash", "-c"]
 
-# Install Tex 
+# Install Tex
 ENV DEBIAN_FRONTEND=noninteractive
-RUN \
-  apt update && \
-  apt install -y \
-        texlive-full
+RUN apt update
+RUN apt-get update
+RUN apt install -y texlive-full
 
-# Install AWS CLI
-
-# Install Commons 
-RUN \
-  apt install -y \
-        openssh-server \
-        libmysqlclient-dev \
-        curl \
-        tmux \
-        netcat \
-        zsh \
-        neovim \
-        tree \
-        sudo \
-        locales \
-        iputils-ping \
-        maven \
-        zip \
-        unzip \
-        gradle \
-        awscli \
-        git 
+# Install Commons, Run each command separately to be cache-friendly.
+RUN apt install -y texlive-full
+RUN apt install -y openssh-server
+RUN apt install -y libmysqlclient-dev
+RUN apt install -y curl
+RUN apt install -y tmux
+RUN apt install -y netcat
+RUN apt install -y zsh
+RUN apt install -y neovim
+RUN apt install -y tree
+RUN apt install -y sudo
+RUN apt install -y locales
+RUN apt install -y iputils-ping
+RUN apt install -y maven
+RUN apt install -y zip
+RUN apt install -y unzip
+RUN apt install -y gradle
+RUN apt install -y awscli
+RUN apt install -y build-essential
+RUN apt install -y cmake
+RUN apt install -y python3-dev
+RUN apt install -y mono-complete
+RUN apt install -y golang
+RUN apt install -y nodejs
+RUN apt install -y npm
+RUN apt install -y git
 
 ARG UID
 ARG GID
 ARG UNAME
 ARG UHOME=/home/$UNAME
 
-RUN useradd -u $UID -g $GID $UNAME 
+RUN useradd -u $UID -g $GID $UNAME
 
-RUN locale-gen en_US.UTF-8 
+RUN locale-gen en_US.UTF-8
 
 # Create HOME dir
 RUN mkdir -p "${UHOME}" \
@@ -77,10 +80,11 @@ RUN mkdir -p \
     $UHOME/.vim_runtime/temp_dirs \
     && curl -LSso \
     $UHOME/.vim/autoload/pathogen.vim \
-    https://tpo.pe/pathogen.vim 
+    https://tpo.pe/pathogen.vim
 
 # Plugins
 RUN cd $UHOME/bundle/ \
+    && git clone --depth 1 https://github.com/Valloric/YouCompleteMe.git \
     && git clone --depth 1 https://github.com/junegunn/fzf \
     && git clone --depth 1 https://github.com/junegunn/fzf.vim \
     && git clone --depth 1 https://github.com/Chiel92/vim-autoformat \
@@ -138,7 +142,7 @@ RUN curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.s
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
 
 # COPY --chown=$ARG_UID not recognised Issue https://github.com/moby/moby/issues/36557
-COPY ./files/init.vim /home/${UNAME}/.config/nvim/init.vim 
+COPY ./files/init.vim /home/${UNAME}/.config/nvim/init.vim
 RUN sudo chown -R ${UID}:${GID} /home/${UNAME}/.config
 COPY ./files/vimrc /home/${UNAME}/.vimrc
 RUN sudo chown ${UID}:${GID} /home/${UNAME}/.vimrc
@@ -147,6 +151,9 @@ RUN sudo chown ${UID}:${GID} /home/${UNAME}/.zshrc
 COPY ./files/tmux.conf /home/${UNAME}/.tmux.conf
 RUN sudo chown ${UID}:${GID} /home/${UNAME}/.tmux.conf
 
+WORKDIR /home/${UNAME}/bundle/YouCompleteMe
+RUN git submodule update --init --recursive
+RUN python3 install.py --java-completer --ts-completer
 
 WORKDIR /home/${UNAME}/workspace
 
