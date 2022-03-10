@@ -16,15 +16,11 @@ https://medium.com/@mccode/understanding-how-uid-and-gid-work-in-docker-containe
 for more explaination of UID/GID in docker:
 
 ```
-docker login -u wangzhihao --password-stdin
 docker build --build-arg UID=$UID --build-arg GID=$GID --build-arg UNAME=$USER -t wangzhihao/dev .
-docker run --rm -it  -v $(pwd):/home/$USER/workspace -v ~/.ssh:/home/$USER/.ssh wangzhihao/dev 
-docker push wangzhihao/dev
 ```
 
 # Run
 
 ```
-docker pull wangzhihao/dev 
-docker run --rm -it  -v $(pwd):/home/$USER/workspace -v ~/.ssh:/home/$USER/.ssh wangzhihao/dev 
+docker run -d -t -i --network host -v /workspace:/home/$USER/workspace -v ~/.ssh:/home/$USER/.ssh -v ~/.aws:/home/$USER/.aws wangzhihao/dev
 ```
