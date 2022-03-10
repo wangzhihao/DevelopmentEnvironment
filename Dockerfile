@@ -15,7 +15,9 @@ RUN apt install -y curl
 RUN apt install -y tmux
 RUN apt install -y netcat
 RUN apt install -y zsh
-RUN apt install -y neovim
+# neovim is not compatible with YouCompleteMe
+#RUN apt install -y neovim
+RUN apt install -y vim-nox
 RUN apt install -y tree
 RUN apt install -y sudo
 RUN apt install -y locales
