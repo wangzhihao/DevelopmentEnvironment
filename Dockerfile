@@ -59,6 +59,10 @@ RUN echo "Set disable_coredump false" \
 # Create HOME dir
 # RUN mkdir -p "/home/${UNAME}"
 
+# Install coursier to manage scala binaries
+RUN curl -fL https://github.com/coursier/launchers/raw/master/cs-x86_64-pc-linux.gz | gzip -d > /bin/cs
+RUN chmod +x /bin/cs
+
 USER $UNAME
 
 # Install sdkman and tools
@@ -68,6 +72,10 @@ RUN source "${UHOME}/.sdkman/bin/sdkman-init.sh" \
 	&& sdk install sbt \
 	&& sdk install scala \
 	&& sdk install maven
+
+RUN cs install metals
+ENV PATH="$PATH:/home/${UNAME}/.local/share/coursier/bin"
+
 
 RUN git config --global user.email "accept.acm@gmail.com"
 RUN git config --global user.name "Zhihao Wang"
@@ -86,7 +94,8 @@ RUN mkdir -p \
 
 # Plugins
 RUN cd $UHOME/bundle/ \
-    && git clone --depth 1 https://github.com/Valloric/YouCompleteMe.git \
+    && git clone --depth 1 https://github.com/prabirshrestha/vim-lsp \
+    && git clone --depth 1 https://github.com/mattn/vim-lsp-settings \
     && git clone --depth 1 https://github.com/junegunn/fzf \
     && git clone --depth 1 https://github.com/junegunn/fzf.vim \
     && git clone --depth 1 https://github.com/Chiel92/vim-autoformat \
@@ -152,10 +161,6 @@ COPY ./files/zshrc /home/${UNAME}/.zshrc
 RUN sudo chown ${UID}:${GID} /home/${UNAME}/.zshrc
 COPY ./files/tmux.conf /home/${UNAME}/.tmux.conf
 RUN sudo chown ${UID}:${GID} /home/${UNAME}/.tmux.conf
-
-WORKDIR /home/${UNAME}/bundle/YouCompleteMe
-RUN git submodule update --init --recursive
-RUN python3 install.py --java-completer --ts-completer
 
 WORKDIR /home/${UNAME}/workspace
 

@@ -8,4 +8,9 @@ set number
 set expandtab ts=4 sw=4 ai
 set colorcolumn=80
 nmap <C-e> :!!<CR>
+set wildmenu
+set wildmode=longest:full,full
+
+let g:lsp_log_verbose = 1
+let g:lsp_log_file = expand('~/vim-lsp.log')
 
