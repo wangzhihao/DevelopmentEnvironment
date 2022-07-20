@@ -1,5 +1,10 @@
-execute pathogen#infect('/home/zhihaow/bundle/{}')
-let g:go_version_warning = 0
+call plug#begin()
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'preservim/nerdtree'
+Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+call plug#end()
+
 hi Directory guifg=#00FFFF ctermfg=Cyan
 set nofoldenable
 syntax on 
@@ -7,10 +12,10 @@ filetype plugin indent on
 set number
 set expandtab ts=4 sw=4 ai
 set colorcolumn=80
-nmap <C-e> :!!<CR>
-set wildmenu
-set wildmode=longest:full,full
 
-let g:lsp_log_verbose = 1
-let g:lsp_log_file = expand('~/vim-lsp.log')
+"Coc keys
+" https://code.amazon.com/packages/LegristDotfiles/blobs/1a41d3272f803c9f988e183d2998fdc727d831da/--/vim/bundle/coding_activator.vim#L170
+nmap <silent> gd :<c-u>call CocAction('jumpDefinition')<cr>
 
+" autoload the vimrc after saved.
+autocmd! bufwritepost ~/.vimrc source %

@@ -22,5 +22,10 @@ docker build --build-arg UID=$UID --build-arg GID=$GID --build-arg UNAME=$USER -
 # Run
 
 ```
-docker run -d -t -i --network host -v /workspace:/home/$USER/workspace -v ~/.ssh:/home/$USER/.ssh -v ~/.aws:/home/$USER/.aws wangzhihao/dev
+docker run -d -t -i --network host \
+   -v /workspace:/workspace \
+   -v /home/zhihaow/ssh:/home/zhihaow/.ssh \
+   -v /home/zhihaow/aws:/home/zhihaow/.aws \
+   -v /home/zhihaow/brazil-pkg-cache:/home/zhihaow/brazil-pkg-cache \
+   wangzhihao/dev
 ```
