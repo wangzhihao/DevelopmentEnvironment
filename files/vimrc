@@ -13,9 +13,40 @@ set number
 set expandtab ts=4 sw=4 ai
 set colorcolumn=80
 
-"Coc keys
+"==================================================
+"
+" Coc keys
+"
+"==================================================
+
 " https://code.amazon.com/packages/LegristDotfiles/blobs/1a41d3272f803c9f988e183d2998fdc727d831da/--/vim/bundle/coding_activator.vim#L170
 nmap <silent> gd :<c-u>call CocAction('jumpDefinition')<cr>
+
+" <Tab>: completion
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+" <S-Tab>: completion back
+inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" <CR>: confirm completion, or insert <CR>
+inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<CR>"
+
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1] =~ '\s'
+endfunction
+
+" Organize Imports on save? https://github.com/neoclide/coc.nvim/issues/888
+autocmd BufWritePre *.java :silent call CocAction('runCommand', 'editor.action.organizeImport')
+
+"==================================================
+"
+" Coc keys Ends
+"
+"==================================================
 
 " autoload the vimrc after saved.
 autocmd! bufwritepost ~/.vimrc source %

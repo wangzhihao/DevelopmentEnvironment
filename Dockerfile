@@ -113,6 +113,7 @@ RUN sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/p
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
 RUN vim +Helptags +PlugInstall +qall
+RUN vim -c 'CocInstall -sync coc-java coc-json' -c qall
 
 ENV TERM=xterm-256color
 
