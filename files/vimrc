@@ -19,7 +19,7 @@ set colorcolumn=80
 "
 "==================================================
 
-" https://code.amazon.com/packages/LegristDotfiles/blobs/1a41d3272f803c9f988e183d2998fdc727d831da/--/vim/bundle/coding_activator.vim#L170
+" shortcut for go to definition.
 nmap <silent> gd :<c-u>call CocAction('jumpDefinition')<cr>
 
 " <Tab>: completion

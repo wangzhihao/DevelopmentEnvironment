@@ -114,6 +114,8 @@ RUN sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/p
 
 RUN vim +Helptags +PlugInstall +qall
 RUN vim -c 'CocInstall -sync coc-java coc-json' -c qall
+COPY ./files/coc-settings.json /home/${UNAME}/.config/nvim/coc-settings.json
+RUN sudo chown -R ${UID}:${GID} /home/${UNAME}/.config/nvim/coc-settings.json 
 
 ENV TERM=xterm-256color
 
