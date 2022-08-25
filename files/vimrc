@@ -50,3 +50,11 @@ autocmd BufWritePre *.java :silent call CocAction('runCommand', 'editor.action.o
 
 " autoload the vimrc after saved.
 autocmd! bufwritepost ~/.vimrc source %
+
+" show the total lines in the ruler.
+set rulerformat=%25(%=Lines:%L%)
+
+" make page-down even quicker since it's frequently used.
+nnoremap f <PageDown>
+
+set nohlsearch

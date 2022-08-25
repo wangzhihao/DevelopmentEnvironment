@@ -15,6 +15,7 @@ RUN apt-get install -y curl
 RUN apt-get install -y tmux
 #RUN apt-get install -y netcat
 RUN apt-get install -y zsh
+RUN apt-get install -y cloc
 RUN apt-get install -y neovim
 RUN apt-get install -y tree
 RUN apt-get install -y sudo
@@ -112,7 +113,7 @@ RUN git config --global user.name "Zhihao Wang"
 RUN sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
-RUN vim +Helptags +PlugInstall +qall
+RUN vim +PlugInstall +qall
 RUN vim -c 'CocInstall -sync coc-java coc-json' -c qall
 COPY ./files/coc-settings.json /home/${UNAME}/.config/nvim/coc-settings.json
 RUN sudo chown -R ${UID}:${GID} /home/${UNAME}/.config/nvim/coc-settings.json 
