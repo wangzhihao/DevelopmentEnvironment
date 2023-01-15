@@ -15,8 +15,10 @@ See [this post](
 https://medium.com/@mccode/understanding-how-uid-and-gid-work-in-docker-containers-c37a01d01cf)
 for more explaination of UID/GID in docker:
 
-```
+```sh
 docker build --build-arg UID=$UID --build-arg GID=$GID --build-arg UNAME=$USER -t wangzhihao/dev .
+# or
+docker build --no-cache --build-arg UID=$UID --build-arg GID=$GID --build-arg UNAME=$USER -t wangzhihao/dev .
 ```
 
 # Run
