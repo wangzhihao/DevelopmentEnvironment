@@ -26,8 +26,8 @@ docker build --no-cache --build-arg UID=$UID --build-arg GID=$GID --build-arg UN
 ```
 docker run -d -t -i --network host \
    -v /workspace:/workspace \
-   -v /home/zhihaow/ssh:/home/zhihaow/.ssh \
-   -v /home/zhihaow/aws:/home/zhihaow/.aws \
+   -v /home/zhihaow/.ssh:/home/zhihaow/.ssh \
+   -v /home/zhihaow/.aws:/home/zhihaow/.aws \
    -v /home/zhihaow/brazil-pkg-cache:/home/zhihaow/brazil-pkg-cache \
    wangzhihao/dev
 ```
