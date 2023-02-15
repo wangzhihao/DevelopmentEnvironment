@@ -1,11 +1,2 @@
 {
-    "coc.preferences.formatOnType": true,
-    "coc.preferences.formatOnTypeFiletypes": [
-        "java",
-        "json"
-    ],
-    "coc.preferences.formatOnSaveFiletypes": [
-        "java",
-        "json"
-    ]
 }
